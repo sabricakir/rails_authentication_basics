@@ -11,6 +11,8 @@ module Authentication
     reset_session
     active_session = user.active_sessions.create!(user_agent: request.user_agent, ip_address: request.ip)
     session[:current_active_session_id] = active_session.id
+
+    active_session
   end
 
   def logout
@@ -28,14 +30,12 @@ module Authentication
     redirect_to login_path, alert: "You need to login to access that page." unless user_signed_in?
   end
 
-  def forget(user)
+  def forget_active_session
     cookies.delete :remember_token
-    user.regenerate_remember_token
   end
 
-  def remember(user)
-    user.regenerate_remember_token
-    cookies.permanent.encrypted[:remember_token] = user.remember_token
+  def remember(active_session)
+    cookies.permanent.encrypted[:remember_token] = active_session.remember_token
   end
 
   private
@@ -44,7 +44,7 @@ module Authentication
   current_user = if session[:current_active_session_id].present?
      ActiveSession.find_by(id: session[:current_active_session_id])&.user
    elsif cookies.permanent.encrypted[:remember_token].present?
-     User.find_by(remember_token: cookies.permanent.encrypted[:remember_token])
+     ActiveSession.find_by(remember_token: cookies.permanent.encrypted[:remember_token])&.user
    end
   end
 
