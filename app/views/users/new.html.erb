@@ -1,16 +1,17 @@
-<%= form_with model: @user, url: sign_up_path do |form| %>
+<%= form_with model: @user, url: sign_up_path, html: {class:"flex flex-col justify-center items-center"} do |form| %>
+  <h2 class="text-4xl tracking-widest font-normal mt-5 mb-24 text-[#6F1D71]">SIGN UP APP</h2>
   <%= render partial: "shared/form_errors", locals: { object: form.object } %>
-  <div>
-    <%= form.label :email %>
-    <%= form.email_field :email, required: true %>
+  <div class="relative z-0 mb-6 px-4 md:px-0 w-full md:w-1/2 group">
+    <%= form.email_field :email, required:true, placeholder:"type your email", class:"block py-2.5 px-0 w-full text-md text-gray-900 bg-transparent border-0 border-b-2 border-[#6F1D71] appearance-none focus:outline-none focus:ring-0 focus:border-[#AD48C6] peer"%>
   </div>
-  <div>
-    <%= form.label :password %>
-    <%= form.password_field :password, required: true %>
+  <div class="relative z-0 mb-6 px-4 md:px-0 w-full md:w-1/2 group">
+    <%= form.password_field :password, required:true, placeholder:"type your password", class:"block py-2.5 px-0 w-full text-md text-gray-900 bg-transparent border-0 border-b-2 border-[#6F1D71] appearance-none focus:outline-none focus:ring-0 focus:border-[#AD48C6] peer" %>
   </div>
-  <div>
-    <%= form.label :password_confirmation %>
-    <%= form.password_field :password_confirmation, required: true %>
+  <div class="relative z-0 mb-6 px-4 md:px-0 w-full md:w-1/2 group">
+    <%= form.password_field :password_confirmation, required:true, placeholder:"type your password again", class:"block py-2.5 px-0 w-full text-md text-gray-900 bg-transparent border-0 border-b-2 border-[#6F1D71] appearance-none focus:outline-none focus:ring-0 focus:border-[#AD48C6] peer" %>
   </div>
-  <%= form.submit "Sign Up" %>
+  <%= form.submit "Sign Up", class:"text-white font-semibold text-lg text-center py-3  px-24 border border-1 border-[#6F1D71] bg-[#6F1D71] rounded-3xl hover:cursor-pointer hover:bg-[#7b2496] ease-in duration-200" %>
+  <%= link_to 'log in', login_path, class:"text-[#6F1D71] mt-4 text-xl hover:text-[#9a3cbc]" %>
+  <%= link_to 'back', root_path, class:"text-[#6F1D71] text-xl hover:text-[#9a3cbc]" %>
 <% end %>
+
