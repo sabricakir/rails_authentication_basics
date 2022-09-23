@@ -1,5 +1,7 @@
 <% if object.errors.any? %>
-  <div class="px-4 md:px-0 w-full md:w-1/2 text-md text-red-600 text-end">
+  <div class="px-4 md:px-0 w-full md:w-1/2 text-md text-red-600 text-end"
+       data-controller="form-messages"
+       data-form-messages-target="message">
     <%= object.errors.full_messages.to_sentence%>
   </div>
 <% end %>
