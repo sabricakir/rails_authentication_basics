@@ -49,13 +49,13 @@
               <%= session[:created_at] %>
             </div>
             <div class="mt-2 flex justify-between items-center">
-              <%= button_to "Sign Out This Session", active_session_path(session), class:"text-[#6F1D71] text-xl hover:text-[#9a3cbc] mt-4", data:{turbo_method: :delete} %>
+              <%= link_to "sign out this session", active_session_path(session), class:"text-[#6F1D71] text-xl hover:text-[#9a3cbc] mt-4", data:{turbo_method: :delete} %>
             </div>
         </div>
         <% end %>
-      <%= button_to "log out of all other sessions",
-                    destroy_all_active_sessions_path, data:{turbo_method: :delete},
-                    class:"text-[#6F1D71] text-xl hover:text-[#9a3cbc] mt-4 w-full text-end" %>
+      <%= link_to "log out of all other sessions",
+                    destroy_all_active_sessions_path, data:{turbo_method: :delete, turbo_confirm: "Are u Sure?"},
+                    class:"text-[#6F1D71] text-xl hover:text-[#9a3cbc] mt-4 flex justify-end items-start" %>
     <% end %>
   </div>
 
