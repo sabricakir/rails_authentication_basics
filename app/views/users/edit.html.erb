@@ -1,43 +1,62 @@
-<%= form_with model: @user, url: account_path, method: :put do |form| %>
-  <%= render partial: "shared/form_errors", locals: { object: form.object } %>
-  <div>
-    <%= form.label :email, "Current Email" %>
-    <%= form.email_field :email, disabled: true %>
-  </div>
-  <div>
-    <%= form.label :unconfirmed_email, "New Email" %>
-    <%= form.text_field :unconfirmed_email %>
-  </div>
-  <div>
-    <%= form.label :password, "Password (leave blank if you don't want to change it)" %>
-    <%= form.password_field :password %>
-  </div>
-  <div>
-    <%= form.label :password_confirmation %>
-    <%= form.password_field :password_confirmation %>
-  </div>
-  <hr/>
-  <div>
-      <%= form.label :current_password, "Current password (we need your current password to confirm your changes)" %>
-    <%= form.password_field :current_password, required: true %>
-  </div>
-  <%= form.submit "Update Account" %>
-<% end %>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+  <%= form_with model: @user, url: account_path, html: {class:"flex flex-col justify-center items-center md:col-span-2"}, method: :put do |form| %>
+    <h2 class="text-4xl tracking-widest font-normal mt-5 mb-24 text-[#6F1D71]">UPDATE ACCOUNT</h2>
+    <%= render partial: "shared/form_errors", locals: { object: form.object } %>
+    <div class="relative z-0 mb-6 px-4 md:px-0 w-full group">
+      <%= form.email_field :email, disabled:true, class:"block py-2.5 px-0 w-full text-md text-gray-900 bg-gray-200 border-0 border-b-2 border-[#6F1D71] appearance-none focus:outline-none focus:ring-0 focus:border-[#AD48C6] peer"%>
+    </div>
+    <div class="relative z-0 mb-6 px-4 md:px-0 w-full group">
+      <%= form.text_field :unconfirmed_email, placeholder:"type your new email if u want" ,class:"block py-2.5 px-0 w-full text-md text-gray-900 bg-transparent border-0 border-b-2 border-[#6F1D71] appearance-none focus:outline-none focus:ring-0 focus:border-[#AD48C6] peer"%>
+    </div>
+    <div class="relative z-0 mb-6 px-4 md:px-0 w-full group">
+      <%= form.password_field :password, placeholder:"Password (leave blank if you don't want to change it)", class:"block py-2.5 px-0 w-full text-md text-gray-900 bg-transparent border-0 border-b-2 border-[#6F1D71] appearance-none focus:outline-none focus:ring-0 focus:border-[#AD48C6] peer" %>
+    </div>
+    <div class="relative z-0 mb-6 px-4 md:px-0 w-full group">
+      <%= form.password_field :password_confirmation, placeholder:"type your password again", class:"block py-2.5 px-0 w-full text-md text-gray-900 bg-transparent border-0 border-b-2 border-[#6F1D71] appearance-none focus:outline-none focus:ring-0 focus:border-[#AD48C6] peer" %>
+    </div>
+    <div class="h-2 w-full px-4 md:px-0 bg-[#6F1D71] border border-[#6F1D71] rounded-3xl mt-16"></div>
+    <div class="relative z-0 mb-6 px-4 md:px-0 w-full group mt-4">
+      <%= form.password_field :current_password, required: true, placeholder:"*Current password (we need your current password to confirm your changes)", class:"block py-2.5 px-0 w-full text-md text-gray-900 bg-transparent border-0 border-b-2 border-[#6F1D71] appearance-none focus:outline-none focus:ring-0 focus:border-[#AD48C6] peer" %>
+    </div>
+    <%= form.submit "Update Account", class:"text-white font-semibold text-lg text-center py-3  px-24 border border-1 border-[#6F1D71] bg-[#6F1D71] rounded-3xl hover:cursor-pointer hover:bg-[#7b2496] ease-in duration-200" %>
+    <%= link_to 'back', root_path, class:"text-[#6F1D71] text-xl hover:text-[#9a3cbc] mt-4" %>
+  <% end %>
 
 
-<h2>Current Logins</h2>
-<% if @active_sessions.any? %>
-  <%= button_to "Log out of all other sessions", destroy_all_active_sessions_path, method: :delete %>
-  <table>
-    <thead>
-    <tr>
-      <th>User Agent</th>
-      <th>IP Address</th>
-      <th>Signed In At</th>
-    </tr>
-    </thead>
-    <tbody>
-    <%= render @active_sessions %>
-    </tbody>
-  </table>
-<% end %>
+  <div class="md:col-span-1 overflow-y-auto">
+    <% if @active_sessions.any? %>
+      <h2 class="text-xl font-semibold mt-16 mb-6 text-[#6F1D71] text-center">Current Logins</h2>
+        <% @active_sessions.each do |session| %>
+          <div class="flex flex-col justify-center items-start">
+            <div class="mt-2 flex justify-between items-center">
+              <%= image_tag "user-agent-icon" %>
+              <%if session[:user_agent] %>
+                <%= session[:user_agent] %>
+              <% else %>
+                <%= "unknown" %>
+              <% end %>
+            </div>
+            <div class="mt-2 flex justify-between items-center">
+              <%= image_tag "ip-address-icon" %>
+              <%if session[:ip] %>
+                <%= session[:ip] %>
+              <% else %>
+                <%= "unknown" %>
+              <% end %>
+            </div>
+            <div class="mt-2 flex justify-between items-center">
+              <%= image_tag "created-at-icon" %>
+              <%= session[:created_at] %>
+            </div>
+            <div class="mt-2 flex justify-between items-center">
+              <%= button_to "Sign Out This Session", active_session_path(session), class:"text-[#6F1D71] text-xl hover:text-[#9a3cbc] mt-4", data:{turbo_method: :delete} %>
+            </div>
+        </div>
+        <% end %>
+      <%= button_to "log out of all other sessions",
+                    destroy_all_active_sessions_path, data:{turbo_method: :delete},
+                    class:"text-[#6F1D71] text-xl hover:text-[#9a3cbc] mt-4 w-full text-end" %>
+    <% end %>
+  </div>
+
+</div>
