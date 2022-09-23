@@ -1,7 +1,6 @@
 <% if object.errors.any? %>
-  <ul>
-    <% object.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-    <% end %>
-  </ul>
+  <div class="px-4 md:px-0 w-full md:w-1/2 text-md text-red-600 text-end">
+    <%= object.errors.full_messages.to_sentence%>
+  </div>
 <% end %>
+
